@@ -1,0 +1,368 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TimeRegestrationWebApiDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Activity">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ProjectID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Organization">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="OrganizationName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="PersonName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="SecurityCode" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="OrganizationID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Info" Type="varchar" MaxLength="100" />
+          <Property Name="OrganizationID" Type="int" Nullable="false" />
+          <Property Name="isDone" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TimeSpent">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="StartTime" Type="datetime" />
+          <Property Name="FinishTime" Type="datetime" />
+          <Property Name="HoursSpent" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="ActivityID" Type="int" Nullable="false" />
+          <Property Name="PersonID" Type="int" />
+        </EntityType>
+        <Association Name="FK__Activity__Projec__3F466844">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="Activity" Type="Self.Activity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Activity">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Person__Organiza__398D8EEE">
+          <End Role="Organization" Type="Self.Organization" Multiplicity="1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Organization">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="OrganizationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Project__Organiz__3C69FB99">
+          <End Role="Organization" Type="Self.Organization" Multiplicity="1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Organization">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="OrganizationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TimeSpent__Activ__4222D4EF">
+          <End Role="Activity" Type="Self.Activity" Multiplicity="1" />
+          <End Role="TimeSpent" Type="Self.TimeSpent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Activity">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TimeSpent">
+              <PropertyRef Name="ActivityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TimeSpent__Perso__4316F928">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="TimeSpent" Type="Self.TimeSpent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TimeSpent">
+              <PropertyRef Name="PersonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TimeRegestrationWebApiDBModelStoreContainer">
+          <EntitySet Name="Activity" EntityType="Self.Activity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Organization" EntityType="Self.Organization" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TimeSpent" EntityType="Self.TimeSpent" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Activity__Projec__3F466844" Association="Self.FK__Activity__Projec__3F466844">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="Activity" EntitySet="Activity" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Person__Organiza__398D8EEE" Association="Self.FK__Person__Organiza__398D8EEE">
+            <End Role="Organization" EntitySet="Organization" />
+            <End Role="Person" EntitySet="Person" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Project__Organiz__3C69FB99" Association="Self.FK__Project__Organiz__3C69FB99">
+            <End Role="Organization" EntitySet="Organization" />
+            <End Role="Project" EntitySet="Project" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TimeSpent__Activ__4222D4EF" Association="Self.FK__TimeSpent__Activ__4222D4EF">
+            <End Role="Activity" EntitySet="Activity" />
+            <End Role="TimeSpent" EntitySet="TimeSpent" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TimeSpent__Perso__4316F928" Association="Self.FK__TimeSpent__Perso__4316F928">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="TimeSpent" EntitySet="TimeSpent" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TimeRegestrationWebApiDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Activity">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ProjectID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Project" Relationship="Self.FK__Activity__Projec__3F466844" FromRole="Activity" ToRole="Project" />
+          <NavigationProperty Name="TimeSpents" Relationship="Self.FK__TimeSpent__Activ__4222D4EF" FromRole="Activity" ToRole="TimeSpent" />
+        </EntityType>
+        <EntityType Name="Organization">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="OrganizationName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="People" Relationship="Self.FK__Person__Organiza__398D8EEE" FromRole="Organization" ToRole="Person" />
+          <NavigationProperty Name="Projects" Relationship="Self.FK__Project__Organiz__3C69FB99" FromRole="Organization" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="PersonName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SecurityCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="OrganizationID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Organization" Relationship="Self.FK__Person__Organiza__398D8EEE" FromRole="Person" ToRole="Organization" />
+          <NavigationProperty Name="TimeSpents" Relationship="Self.FK__TimeSpent__Perso__4316F928" FromRole="Person" ToRole="TimeSpent" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Info" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="OrganizationID" Type="Int32" Nullable="false" />
+          <Property Name="isDone" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Activities" Relationship="Self.FK__Activity__Projec__3F466844" FromRole="Project" ToRole="Activity" />
+          <NavigationProperty Name="Organization" Relationship="Self.FK__Project__Organiz__3C69FB99" FromRole="Project" ToRole="Organization" />
+        </EntityType>
+        <EntityType Name="TimeSpent">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="StartTime" Type="DateTime" Precision="3" />
+          <Property Name="FinishTime" Type="DateTime" Precision="3" />
+          <Property Name="HoursSpent" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="ActivityID" Type="Int32" Nullable="false" />
+          <Property Name="PersonID" Type="Int32" />
+          <NavigationProperty Name="Activity" Relationship="Self.FK__TimeSpent__Activ__4222D4EF" FromRole="TimeSpent" ToRole="Activity" />
+          <NavigationProperty Name="Person" Relationship="Self.FK__TimeSpent__Perso__4316F928" FromRole="TimeSpent" ToRole="Person" />
+        </EntityType>
+        <Association Name="FK__Activity__Projec__3F466844">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="Activity" Type="Self.Activity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Activity">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TimeSpent__Activ__4222D4EF">
+          <End Role="Activity" Type="Self.Activity" Multiplicity="1" />
+          <End Role="TimeSpent" Type="Self.TimeSpent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Activity">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TimeSpent">
+              <PropertyRef Name="ActivityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Person__Organiza__398D8EEE">
+          <End Role="Organization" Type="Self.Organization" Multiplicity="1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Organization">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="OrganizationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Project__Organiz__3C69FB99">
+          <End Role="Organization" Type="Self.Organization" Multiplicity="1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Organization">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="OrganizationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TimeSpent__Perso__4316F928">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="TimeSpent" Type="Self.TimeSpent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TimeSpent">
+              <PropertyRef Name="PersonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TimeRegestrationWebApiDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Activities" EntityType="Self.Activity" />
+          <EntitySet Name="Organizations" EntityType="Self.Organization" />
+          <EntitySet Name="People" EntityType="Self.Person" />
+          <EntitySet Name="Projects" EntityType="Self.Project" />
+          <EntitySet Name="TimeSpents" EntityType="Self.TimeSpent" />
+          <AssociationSet Name="FK__Activity__Projec__3F466844" Association="Self.FK__Activity__Projec__3F466844">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="Activity" EntitySet="Activities" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TimeSpent__Activ__4222D4EF" Association="Self.FK__TimeSpent__Activ__4222D4EF">
+            <End Role="Activity" EntitySet="Activities" />
+            <End Role="TimeSpent" EntitySet="TimeSpents" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Person__Organiza__398D8EEE" Association="Self.FK__Person__Organiza__398D8EEE">
+            <End Role="Organization" EntitySet="Organizations" />
+            <End Role="Person" EntitySet="People" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Project__Organiz__3C69FB99" Association="Self.FK__Project__Organiz__3C69FB99">
+            <End Role="Organization" EntitySet="Organizations" />
+            <End Role="Project" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TimeSpent__Perso__4316F928" Association="Self.FK__TimeSpent__Perso__4316F928">
+            <End Role="Person" EntitySet="People" />
+            <End Role="TimeSpent" EntitySet="TimeSpents" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TimeRegestrationWebApiDBModelStoreContainer" CdmEntityContainer="TimeRegestrationWebApiDBEntities">
+          <EntitySetMapping Name="Activities">
+            <EntityTypeMapping TypeName="TimeRegestrationWebApiDBModel.Activity">
+              <MappingFragment StoreEntitySet="Activity">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Organizations">
+            <EntityTypeMapping TypeName="TimeRegestrationWebApiDBModel.Organization">
+              <MappingFragment StoreEntitySet="Organization">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="OrganizationName" ColumnName="OrganizationName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="People">
+            <EntityTypeMapping TypeName="TimeRegestrationWebApiDBModel.Person">
+              <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="PersonName" ColumnName="PersonName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="SecurityCode" ColumnName="SecurityCode" />
+                <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Projects">
+            <EntityTypeMapping TypeName="TimeRegestrationWebApiDBModel.Project">
+              <MappingFragment StoreEntitySet="Project">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Info" ColumnName="Info" />
+                <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
+                <ScalarProperty Name="isDone" ColumnName="isDone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TimeSpents">
+            <EntityTypeMapping TypeName="TimeRegestrationWebApiDBModel.TimeSpent">
+              <MappingFragment StoreEntitySet="TimeSpent">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="FinishTime" ColumnName="FinishTime" />
+                <ScalarProperty Name="HoursSpent" ColumnName="HoursSpent" />
+                <ScalarProperty Name="ActivityID" ColumnName="ActivityID" />
+                <ScalarProperty Name="PersonID" ColumnName="PersonID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
