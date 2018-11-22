@@ -14,6 +14,7 @@ namespace RegisterActivityWebApi.EF
     
     public partial class Activity
     {
+        //Added comment for git test
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Activity()
         {
